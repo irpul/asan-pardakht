@@ -13,10 +13,9 @@
 			font-family:tahoma;
 			background: url(../images/bg.jpg) #12a7d1 top center repeat-x ;	
 			direction: rtl ;
-
 		}
 
-                td{
+        td{
 			font-size:13px;
 			color:000000;
 			margin:0px;
@@ -41,7 +40,7 @@
 </head>
 <body>
 <div style="margin:auto;width:900px;background:#D3E1E1;border:#b4b4b4 1px solid;border-radius:5px;text-align:right;font-size:18pt;padding:10px;margin-top:10px">
-آسان پرداز  <span style="margin:5px;font-size:12px;direction:rtl"><a href="http://irpul.ir/panel/login.php" dir="rtl">  [پنل کاربری ایرپول]  </a>
+آسان پرداز  <span style="margin:5px;font-size:12px;direction:rtl"><a target="_blank" href="https://irpul.ir/panel/login.php" dir="rtl">  [پنل کاربری ایرپول]  </a>
 
 <?php if(isset($_SESSION['ASemail'])) {?><span style="margin:5px;font-size:12px;direction:rtl"><a href="logout.php" dir="rtl">  [خروج]  </a><?php } ?>
 </div>
