@@ -8,7 +8,7 @@ if( isset($_GET['irpul_token']) ){
 	$decrypted 		= url_decrypt( $irpul_token );
 	if($decrypted['status']){
 		parse_str($decrypted['data'], $ir_output);
-		$tran_id 	= $ir_output['tran_id'];
+		$trans_id 	= $ir_output['trans_id'];
 		$order_id 	= $ir_output['order_id'];
 		$amount 	= $ir_output['amount'];
 		$refcode	= $ir_output['refcode'];
@@ -19,7 +19,7 @@ if( isset($_GET['irpul_token']) ){
 				message_exit("خطا در انجام عملیات بانکی ، شناسه سفارش موجود نمی باشد<br/><a href='$site_url'>بازگشت</a>");
 			}
 
-			if (!$tran_id) {
+			if (!$trans_id) {
 				message_exit("خطا در انجام عملیات بانکی ، شناسه تراکنش موجود نمی باشد<br/><a href='$site_url'>بازگشت</a>");
 			}
 
@@ -36,7 +36,7 @@ if( isset($_GET['irpul_token']) ){
 				$amount = $check_row2['amount'];
 				$parameters = array(
 					'method' 		=> 'verify',
-					'trans_id' 		=> $tran_id,
+					'trans_id' 		=> $trans_id,
 					'amount'	 	=> $amount,
 				);
 
@@ -49,10 +49,10 @@ if( isset($_GET['irpul_token']) ){
 
 						$msg="<p align='center'><font color='#1B7B71'><b>عملیات خرید با موفقیت به پایان رسید</b></font></p>
 				مشخصات پرداخت شما:
-				<br>شماره سفارش: $order_id 
-				<br> مبلغ پرداختی: $amount ریال 
-				<br> شناسه تراکنش: $tran_id 
-				<br> شماره پیگیری: $refcode  
+				<br>شماره سفارش: $order_id
+				<br> مبلغ پرداختی: $amount ریال
+				<br> شناسه تراکنش: $trans_id
+				<br> شماره پیگیری: $refcode
 				<br> از خرید شما متشکریم<br>";
 
 						message_exit($msg);
