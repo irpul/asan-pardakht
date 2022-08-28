@@ -4,10 +4,7 @@ include_once "./config.php";
 include_once "./include/init.php";
 
 if( isset($_GET['irpul_token']) ){
-	$irpul_token 	= $_GET['irpul_token'];
-	$decrypted 		= url_decrypt( $irpul_token );
-	if($decrypted['status']){
-		parse_str($decrypted['data'], $ir_output);
+	if( isset($_POST['trans_id']) && isset($_POST['order_id']) && isset($_POST['amount']) && isset($_POST['refcode']) && isset($_POST['status']) ){
 		$trans_id 	= $ir_output['trans_id'];
 		$order_id 	= $ir_output['order_id'];
 		$amount 	= $ir_output['amount'];
@@ -45,17 +42,25 @@ if( isset($_GET['irpul_token']) ){
 					$data =  json_decode($result['data'],true);
 
 					if( isset($data['code']) && $data['code'] === 1){
-						$mysqli->query("update `order` set `status`='y',`ref`='$refcode' where `id`='$order_id' limit 1");
+						$irpul_amount  = $data['amount'];
 
-						$msg="<p align='center'><font color='#1B7B71'><b>عملیات خرید با موفقیت به پایان رسید</b></font></p>
-				مشخصات پرداخت شما:
-				<br>شماره سفارش: $order_id
-				<br> مبلغ پرداختی: $amount ریال
-				<br> شناسه تراکنش: $trans_id
-				<br> شماره پیگیری: $refcode
-				<br> از خرید شما متشکریم<br>";
+						if($amount == $irpul_amount){
+							//paid
+							$mysqli->query("update `order` set `status`='y',`ref`='$refcode' where `id`='$order_id' limit 1");
 
-						message_exit($msg);
+							$msg="<p align='center'><font color='#1B7B71'><b>عملیات خرید با موفقیت به پایان رسید</b></font></p>
+							مشخصات پرداخت شما:
+							<br>شماره سفارش: $order_id
+							<br> مبلغ پرداختی: $amount ریال
+							<br> شناسه تراکنش: $trans_id
+							<br> شماره پیگیری: $refcode
+							<br> از خرید شما متشکریم<br>";
+
+							message_exit($msg);
+						}
+						else{
+							message_exit('مبلغ تراکنش در ایرپول (' . number_format($irpul_amount) . ' تومان) تومان با مبلغ تراکنش در سیمانت (' . number_format($amount) . ' تومان) برابر نیست');
+						}
 					}
 					else{
 						message_exit("'خطا در پرداخت. کد خط: " . $data['code'] . '<br/> ' . $data['status'] ."<br/><a href='$site_url'>بازگشت</a>");
@@ -68,6 +73,10 @@ if( isset($_GET['irpul_token']) ){
 			message_exit("فاکتور پرداخت نشده است <br/><a href='$site_url'>بازگشت</a>");
 		}
 	}
+	else{
+		message_exit("undefined callback parameters");
+	}
+
 }else{
 	echo 'درخواست نامشخص';
 }
