@@ -5,11 +5,11 @@ include_once "./include/init.php";
 
 if( isset($_GET['irpul_token']) ){
 	if( isset($_POST['trans_id']) && isset($_POST['order_id']) && isset($_POST['amount']) && isset($_POST['refcode']) && isset($_POST['status']) ){
-		$trans_id 	= $ir_output['trans_id'];
-		$order_id 	= $ir_output['order_id'];
-		$amount 	= $ir_output['amount'];
-		$refcode	= $ir_output['refcode'];
-		$status 	= $ir_output['status'];
+		$trans_id 	= $_POST['trans_id'];
+		$order_id 	= $_POST['order_id'];
+		$amount 	= $_POST['amount'];
+		$refcode	= $_POST['refcode'];
+		$status 	= $_POST['status'];
 
 		if($status == 'paid'){
 			if (!$order_id){
